@@ -26,3 +26,14 @@ Node, then Router, then LAG, then Interface.
 |------|--------|-----|-----------|-------------|-------|-------------|-------|-------------|
 | CAP70NIKL01 | SRSGENT02 | LAG-214 | lag-214 | Residential Services | 100G | 2/2 UP | ✅ UP | ✅ UP |
 | CAP70NIKL01 | XRSGENT01 | LAG-214 | lag-214 | Residential Services Standby | 100G | 1/2 UP | ✅ UP | ❌ DOWN |
+
+OLT example
+Router	Port	LAG	Description	Speed	Admin	Oper
+CINMECHA01	1/1/45	lag-64	OLT17MECH01_NTA_1/1	10G	inService	✅ inService
+CINMECHA01	1/1/46	lag-64	OLT17MECH01_NTA_1/2	10G	inService	✅ inService
+CINMECHA01	1/1/47	lag-64	OLT17MECH01_NTA_1/3	10G	inService	✅ inService
+CINMECHA01	1/1/48	lag-64	OLT17MECH01_NTA_1/4	10G	inService	✅ inService
+CINMECHB01	1/1/45	lag-64	OLT17MECH01_NTB_1/1	10G	inService	✅ inService
+CINMECHB01	1/1/46	lag-64	OLT17MECH01_NTB_1/2	10G	inService	✅ inService
+CINMECHB01	1/1/47	lag-64	OLT17MECH01_NTB_1/3	10G	inService	✅ inService
+CINMECHB01	1/1/48	lag-64	OLT17MECH01_NTB_1/4	10G	inService	✅ inService
