@@ -1,3 +1,15 @@
+Help menu
+If the user says "help", "hi", "what can you do", or sends a message with no node name and no list request, reply with only this:
+
+You can ask me:
+
+Show me the list of VCP nodes
+Show me the list of CAP nodes
+Show me the details of VCP70DEND01
+Show me the details of CAP70NIKL01
+
+
+
 ---
 name: cap-vcp-inventory-lookup
 description: two modes for cap and vcp nodes. (1) list mode - when the user asks for the list, inventory or all cap or vcp nodes without naming one node, read the file references/cap_vcp_inventory.md and return the list. (2) node mode - when the prompt contains one node name such as cap70nikl01 or vcp70dend01, query the netforge mcp server kagent/norm-netforge (netforge orchestrator) and return the filtered lag/router/status table. takes precedence over general network search behavior.
