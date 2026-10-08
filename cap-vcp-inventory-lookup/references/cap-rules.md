@@ -11,21 +11,11 @@ A router is included only if its name has EXACTLY 9 characters (letters or digit
 
 Fixed shape of a valid router: 3-letter prefix (SRS or XRS) + 4-letter site code + 2-digit number. Example: SRS + ASSE + 01 = SRSASSE01.
 
-How to check each router, one by one:
+How to check (do this silently, never write it in the answer):
 
-Write the router name as separate characters and count them. Example: S-R-S-A-S-S-E-0-1 = 9.
-If the count is 9 and the name starts with SRS or XRS, include its rows.
-If the count is 8 or fewer, or 10 or more, leave out all of its rows.
-Worked examples:
-
-SRSASSE01 = 9 characters, included
-SRSHOBO01 = 9 characters, included
-SRSGENT02 = 9 characters, included
-XRSGENT01 = 9 characters, included
-SRSTAB01 = 8 characters (site code TAB has only 3 letters), left out
-SRDEND01 = 8 characters, left out
-HCINDENDA01 = 11 characters, left out
-Do this check on every router before building the table. A router that fails it never appears in the output, even if its Admin is UP.
+Count the characters of each router name. Include its rows only if the count is 9 and the name starts with SRS or XRS.
+Reference: SRSASSE01, SRSHOBO01, SRSGENT02, XRSGENT01 = 9 (valid). SRSTAB01, SRDEND01 = 8 (not valid). HCINDENDA01 = 11 (not valid).
+Never mention a router or LAG that was left out. Never list the routers or LAGs you checked. A router that fails the check never appears in the output, even if its Admin is UP.
 
 Columns (exactly, in this order)
 Node | Router | LAG | Interface | Description | Speed | Member Ports | Admin | Oper Status
