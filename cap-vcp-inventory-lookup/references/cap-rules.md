@@ -1,5 +1,14 @@
 # CAP rules (node starts with CAP)
 
+## ADMIN GATE (mandatory, applied last, before printing)
+For EVERY row, read the Admin value as reported by NetForge, ignoring case.
+
+Keep the row ONLY if Admin is exactly "UP".
+DELETE the row if Admin is anything else: DOWN, DISABLED, SHUTDOWN, UNKNOWN, empty, missing, or any other wording.
+Oper Status plays no part in this decision. A row with Admin = UP is kept even if Oper Status is DOWN or DEGRADED.
+Before printing, re-read the table. If any row has an Admin column other than ✅ UP, delete it.
+
+
 ## Routers
 Keep only routers matching `SRS*` or `XRS*` (e.g. SRSGENT02, SRSROES02, XRSGENT01, XRSGENT02).
 Exclude all `HCIN*` routers and all `SR*` routers that are not SRS/XRS (e.g. SRDEND01, SRNIKL01, HCINDENDA01).
