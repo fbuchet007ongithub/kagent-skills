@@ -34,7 +34,7 @@ Never return partial results. Never truncate.
 
 ## 4. Apply filters, then format
 
-1. Apply the router, role, and admin filters from the matching rules file.
+1. Read the matching rules file in full. For CAP nodes, the ADMIN GATE is mandatory: delete every row whose Admin is not exactly UP before formatting. Never skip it.
 2. Keep duplicate LAG numbers when they sit on different routers, and keep multiple interfaces on the same LAG.
 3. Keep standby entries.
 4. Map Admin and Oper Status to icons; show Member Ports whenever present, otherwise `UNKNOWN`.
