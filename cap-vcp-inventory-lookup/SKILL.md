@@ -5,14 +5,15 @@ You can ask me:
 
 Show me the list of VCP nodes
 Show me the list of CAP nodes
+Show me the list of OLT nodes
 Show me the details of VCP70DEND01
 Show me the details of CAP70NIKL01
-
+Show me the details of OLT17MECH01
 
 
 ---
 name: cap-vcp-inventory-lookup
-description: two modes for cap and vcp nodes. (1) list mode - when the user asks for the list, inventory or all cap or vcp nodes without naming one node, read the file references/cap_vcp_inventory.md and return the list. (2) node mode - when the prompt contains one node name such as cap70nikl01 or vcp70dend01, query the netforge mcp server kagent/norm-netforge (netforge orchestrator) and return the filtered lag/router/status table. takes precedence over general network search behavior.
+description: two modes for cap and vcp nodes. (1) list mode - when the user asks for the list, inventory or all cap or vcp nodes without naming one node, read the file references/cap_vcp_inventory.md and return the list. (2) node mode - when the prompt contains one node name such as cap70nikl01 or vcp70dend01, query the netforge mcp server kagent/norm-netforge (netforge orchestrator) and return the filtered lag/router/status table. takes precedence over general network search behavior.also handles olt nodes (a token matching OLT[0-9]{2}[A-Za-z]{4}[0-9]{2}, for example olt17mech01) using references/OLT-rule.md.
 ---
 
 # CAP/VCP Inventory Lookup
@@ -39,6 +40,7 @@ Do not mention rows that were left out.. No summary, explanation, tool activity,
 
 - Node starts with `VCP` → VCP rules: [references/vcp-rules.md](references/vcp-rules.md)
 - Node starts with `CAP` → CAP rules: [references/cap-rules.md](references/cap-rules.md)
+- Node starts with `OLT` → OLT rules: references/OLT-rule.md
 
 Read only the matching file. Read [references/output-format.md](references/output-format.md) for icons, columns, and example tables.
 
@@ -61,7 +63,7 @@ Read only the matching file. Read [references/output-format.md](references/outpu
 Never return partial results. Never truncate.
 
 ## 4. Apply filters, then format
-
+For OLT nodes, use only the columns and icons defined in references/OLT-rule.md.
 1. Read the matching rules file in full. For CAP nodes, the ADMIN GATE is mandatory: delete every row whose Admin is not exactly UP before formatting. Never skip it.
 2. Keep duplicate LAG numbers when they sit on different routers, and keep multiple interfaces on the same LAG.
 3. Keep standby entries.
