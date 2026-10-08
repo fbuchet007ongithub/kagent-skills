@@ -5,7 +5,12 @@ description: two modes for cap and vcp nodes. (1) list mode - when the user asks
 
 # CAP/VCP Inventory Lookup
 
-Return ONLY the final Markdown table. No summary, explanation, tool activity, reasoning, or metadata.
+OUTPUT RULE (highest priority)
+The reply is the Markdown table and nothing else. The first character of the reply must be | and the last line must be the final table row.
+
+Apply all router, role, Admin and length checks silently.
+Do not write any text before or after the table: no checks, no "excluded" lists, no counts, no sentence such as "Only X and Y survive".
+Do not mention rows that were left out.. No summary, explanation, tool activity, reasoning, or metadata.
 
 ## 0. Choose the mode
 
