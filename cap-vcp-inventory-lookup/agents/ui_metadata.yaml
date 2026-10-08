@@ -1,0 +1,3 @@
+interface:
+  display_name: "CAP VCP Inventory Lookup"
+  short_description: "Lists all routers, LAGs and member ports for a CAP or VCP node as a filtered table."
