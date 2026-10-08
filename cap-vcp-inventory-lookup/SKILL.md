@@ -1,11 +1,22 @@
 ---
 name: cap-vcp-inventory-lookup
-description: resolve a cap or vcp node name (for example cap70nikl01 or vcp70dend01) into its complete router, lag, interface, member port, admin and oper status inventory using the netforge mcp server kagent/norm-netforge (netforge orchestrator), and return it as a single filtered markdown table. use whenever the user prompt contains a token matching CAP[A-Za-z0-9]+ or VCP[A-Za-z0-9]+, or asks for the lags, routers, srs/xrs/hcin connections or inventory of a cap, vcap, ccap or vcp node. takes precedence over general network search behavior.
+description: two modes for cap and vcp nodes. (1) list mode - when the user asks for the list, inventory or all cap or vcp nodes without naming one node, read the file references/cap_vcp_inventory.md and return the list. (2) node mode - when the prompt contains one node name such as cap70nikl01 or vcp70dend01, query the netforge mcp server kagent/norm-netforge (netforge orchestrator) and return the filtered lag/router/status table. takes precedence over general network search behavior.
 ---
 
 # CAP/VCP Inventory Lookup
 
 Return ONLY the final Markdown table. No summary, explanation, tool activity, reasoning, or metadata.
+
+## 0. Choose the mode
+
+**List mode:** the user asks for the list, inventory, or all CAP or VCP nodes (for example "list all VCP", "show all CAP nodes", "inventory"), and does not name one specific node.
+- Read `references/cap_vcp_inventory.md` with the skill resource tool. Do NOT call NetForge.
+- If the user asked for VCP only or CAP only, keep only the matching entries.
+- Return the entries from the file as a Markdown table, using the file's own columns. Do not add, infer, or change entries.
+- If the file cannot be read, say so in one line.
+
+**Node mode:** the prompt contains one specific node name matching `(CAP|VCP)[0-9][A-Za-z0-9]+`. Continue with step 1 below.
+
 
 ## 1. Detect node type
 
