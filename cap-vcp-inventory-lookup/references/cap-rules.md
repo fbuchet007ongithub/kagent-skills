@@ -6,17 +6,26 @@ Include a row only if its Admin value is UP.
 Leave out every other row: Admin DOWN, DISABLED, SHUTDOWN, UNKNOWN, empty, missing, or any other wording. These rows never appear in the output.
 Oper Status plays no part in this decision. A row with Admin = UP is included even when Oper Status is DOWN or DEGRADED.
 Before printing, check the Admin column of the table. Every row must show ✅ UP. If any row shows something else, do not print it.
-Routers
-Include a row only if its router name meets BOTH conditions:
+Routers (length check, mandatory)
+A router is included only if its name has EXACTLY 9 characters (letters or digits) AND starts with SRS or XRS.
 
-The name starts with SRS or XRS.
-The name is exactly 9 characters long, all letters or digits (pattern ^(SRS|XRS)[A-Za-z0-9]{6}$). Count the router name only, without any domain suffix.
-Examples:
+Fixed shape of a valid router: 3-letter prefix (SRS or XRS) + 4-letter site code + 2-digit number. Example: SRS + ASSE + 01 = SRSASSE01.
 
-Included: SRSGENT02, SRSROES02, XRSGENT01, XRSGENT02
-Left out (not 9 characters): SRDEND01, SRNIKL01, HCINDENDA01
-Left out (wrong prefix): any HCIN* router and any SR* router that is not SRS/XRS
-A router name shorter or longer than 9 characters never appears in the output.
+How to check each router, one by one:
+
+Write the router name as separate characters and count them. Example: S-R-S-A-S-S-E-0-1 = 9.
+If the count is 9 and the name starts with SRS or XRS, include its rows.
+If the count is 8 or fewer, or 10 or more, leave out all of its rows.
+Worked examples:
+
+SRSASSE01 = 9 characters, included
+SRSHOBO01 = 9 characters, included
+SRSGENT02 = 9 characters, included
+XRSGENT01 = 9 characters, included
+SRSTAB01 = 8 characters (site code TAB has only 3 letters), left out
+SRDEND01 = 8 characters, left out
+HCINDENDA01 = 11 characters, left out
+Do this check on every router before building the table. A router that fails it never appears in the output, even if its Admin is UP.
 
 Columns (exactly, in this order)
 Node | Router | LAG | Interface | Description | Speed | Member Ports | Admin | Oper Status
