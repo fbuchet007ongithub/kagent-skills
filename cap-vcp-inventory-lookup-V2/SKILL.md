@@ -38,7 +38,14 @@ Read only the files listed for the node type.
 Resolve the node using the TIMOS aggregates tool. Call norm_services_timos_aggregates(device=<router>, limit=200) to get all LAGs and their member ports for a router.
 Derive the starting router(s) from the node name:
 - VCP → HCIN<location>A01 (e.g. VCP70DEND01 → HCINDENDA01).
-- CAP → SRS and XRS routers for that location (e.g. CAP70NIKL01 → SRSGENT02, XRSGENT01).
+- - CAP → a CAP node is ALWAYS dual-homed to TWO SRS/XRS routers (an A/B redundant
+  pair, which may sit at different sites). You MUST seed and query BOTH, not one.
+      • Seed the location SRS/XRS pair (e.g. CAP70NIKL01 → SRSGENT02, XRSGENT01).
+      • 🔴 Then seed/confirm the SECOND (redundant) SRS/XRS even if it is at another
+        location — e.g. a GENT-homed CAP such as CAP70DEND01 also lives on SRSROES02.
+      • 🔴 Do NOT stop after the first SRS/XRS router returns the CAP's LAG.
+      • 🔴 After querying, follow every standby/redundant-path reference in LAG
+        descriptions to discover the partner router, then query it too.
 - OLT → follow references/OLT-rule.md for router derivation.
 After each query, scan every LAG description for references to other routers (e.g. HCINDENDA01_HCINDENDB01 reveals HCINDENDB01). Query every newly discovered router with norm_services_timos_aggregates.
 Collect ALL relationships: active, standby, and redundant paths; routers; LAGs; member ports.
