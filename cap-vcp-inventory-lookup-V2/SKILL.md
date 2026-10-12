@@ -39,25 +39,34 @@ Read only the files listed for the node type.
 Resolve the node using the TIMOS aggregates tool. Call norm_services_timos_aggregates(device=<router>, limit=200) to get all LAGs and their member ports for a router.
 Derive the starting router(s) from the node name:
 - VCP → HCIN<location>A01 (e.g. VCP70DEND01 → HCINDENDA01).
-- CAP → a CAP node is ALWAYS dual-homed to TWO SRS/XRS routers (an A/B redundant
-  pair, which may sit at DIFFERENT sites with names unrelated to the CAP's own
-  location code). You MUST find and query BOTH.
-🔴    • WARNING: do NOT assume the CAP's location string maps to a same-named SRS/XRS
-🔴      router. It often does NOT. Example: CAP02HERF01 is NOT on SRSHERF/XRSHERF
-🔴      (those do not exist); it is homed on SRSHOBO02 and SRSASSE02.
-🔴    • Preferred method — find the homes by the LAG description:
-🔴        1. Use references/cap_sites.md (site → SRS/XRS home-pair map) if present to
-🔴           look up the two home routers for the CAP's location. Query both.
-🔴        2. If no mapping exists, or the mapped routers return nothing, search the
-🔴           candidate SRS/XRS routers for a LAG whose description == the node name
-🔴           (e.g. "CAP02HERF01"). The routers that host that LAG ARE the home pair.
-🔴    • If a derived/seeded router returns ZERO rows for the CAP, DO NOT conclude
-🔴      "not found". Treat the empty result as a miss and widen the search to other
-🔴      SRS/XRS routers until the CAP's LAG is located on TWO routers.
-🔴    • Do NOT stop after the first SRS/XRS router returns the CAP's LAG; the partner
-🔴      router (second home) must also be found and queried.
-🔴    • After querying, follow every standby/redundant-path reference in LAG
-🔴      descriptions to confirm both homes.
+- CAP → a CAP node is ALWAYS dual-homed to TWO SRS/XRS routers (an A/B pair that
+  may sit at DIFFERENT sites with names unrelated to the CAP's location code).
+🔴  Do NOT build router names from the location code (e.g. CAP02HERF01 is NOT on
+🔴  SRSHERF — it is on SRSHOBO02 and SRSASSE02). Discover the homes dynamically
+🔴  from NORM; no mapping file and no hardcoded router list are needed.
+🔴
+🔴  STEP A — find the two home routers via the global TimosService probe:
+🔴    Call norm_services_probe(probe_name="TimosService",
+🔴        norm_filter="svcName:CCAP-RES-VPLS-<NODE>")   e.g. CCAP-RES-VPLS-CAP02HERF01
+🔴    NORM requires an EXACT field value (no * or substring wildcards).
+🔴    If that returns nothing, retry with these service-name prefixes until docs appear:
+🔴        svcName:CCAP-WHSO-VPLS-<NODE>
+🔴        svcName:CCAP-RES-IES-ACT-<NODE>
+🔴        svcName:CCAP-RES-IES-SBY-<NODE>
+🔴        svcDescription:"CCAP-WHSO-B2B-EPIPE-<NODE>"
+🔴    From ALL returned docs, collect every distinct z_origin matching SRS*/XRS*.
+🔴    These are the CAP's home routers (expect TWO; one may be ACT, one SBY).
+🔴
+🔴  STEP B — fetch LAGs on each home router:
+🔴    For EACH home router from Step A, call
+🔴        norm_services_timos_aggregates(device=<router>, limit=200)
+🔴    Do NOT use the aggregate_name filter (it matches exact LAG names, not the
+🔴    description). From the full list keep the LAG whose lagDescription == <NODE>
+🔴    (e.g. "CAP02HERF01").
+🔴
+🔴  STEP C — a CAP must end up found on BOTH home routers. If only one home was
+🔴  found, re-run Step A with the remaining prefixes before concluding. Keep both
+🔴  the ACT and SBY (standby) entries.
 - OLT → follow references/OLT-rule.md for router derivation.
 After each query, scan every LAG description for references to other routers (e.g. HCINDENDA01_HCINDENDB01 reveals HCINDENDB01). Query every newly discovered router with norm_services_timos_aggregates.
 Collect ALL relationships: active, standby, and redundant paths; routers; LAGs; member ports.
@@ -72,9 +81,9 @@ Count the discovered records.
 Run at least one more lookup using the discovered routers (every router name found in a LAG description).
 Merge, deduplicate, and compare counts.
 If new records appear, continue discovery. Answer only when a pass adds nothing new.
-🔴 For CAP nodes specifically: if you have found the CAP on only ONE SRS/XRS router,
-🔴 you are NOT done — a CAP is always dual-homed; keep searching until BOTH homes are
-🔴 found (or state clearly that only one home could be located).
+🔴 For CAP nodes specifically: a CAP is always dual-homed. If you have the CAP on
+🔴 only ONE SRS/XRS router, you are NOT done — repeat Step A (remaining prefixes)
+🔴 until BOTH homes are found, or state clearly that only one home could be located.
 Never return partial results. Never truncate.
 
 4. Apply the rules, then format
@@ -87,6 +96,6 @@ Output only the columns defined in the matching rules file. Never output device 
 
 5. Error cases
 If the node cannot be resolved or no record passes the rules, return a one-line message saying so instead of a table. Do not invent records.
-🔴 Important: a single SRS/XRS router returning zero rows is NOT by itself "cannot be
-🔴 resolved" for a CAP — only conclude that after searching for the node-name LAG
-🔴 across the SRS/XRS routers and still finding nothing.
+🔴 For a CAP, a single SRS/XRS router returning zero rows is NOT "cannot be resolved".
+🔴 Only conclude that after the TimosService probe (ALL prefixes in Step 2A) returns
+🔴 nothing for the node.
