@@ -7,10 +7,13 @@ Exclude all `HCIN*` routers and all `SR*` routers that are not SRS/XRS (e.g. SRD
 ## Router Discovery for CAP nodes
 CAP nodes are NOT homed on routers named after their own location code.
 Do NOT derive the router name from the CAP node location (e.g. do NOT try SRSKORT01 for CAP14KORT01).
-Query ALL routers matching SRS* or XRS* available in the system — do NOT use a hardcoded list.
-Search every SRS*/XRS* router's LAG descriptions for the CAP node name to identify which router(s) it is homed on.
+
+**Primary CAP home routers (query ALWAYS in parallel):**
+SRSASSE01, SRSASSE02, SRSGENT01, SRSGENT02, SRSHASS01, SRSHASS02, SRSHOBO01, SRSHOBO02, SRSNOCM01, SRSROES01, SRSROES02, XRSASSE01, XRSASSE02, XRSGENT01, XRSGENT02, XRSHASS01, XRSHASS02, XRSHOBO01, XRSHOBO02
+
+For each CAP node, query all 19 routers above via norm_services_timos_aggregates(device=<router>, limit=200) in parallel. Search each LAG description for the CAP node name (e.g., "CAP05SCHO05") to identify which router(s) it is homed on. A CAP must be found on at least TWO routers (Active and Standby/Backup).
 Only return results from routers where the CAP node is actually found.
-Continue exhaustive discovery as per the standard workflow.
+Continue exhaustive discovery as per the standard workflow (scan discovered LAG descriptions for cross-references to other routers).
 
 ## Admin filter
 Keep only records where Admin = UP.
