@@ -1,5 +1,7 @@
 # Output format
 
+The tables below only show the layout. Never copy their values into an answer.
+
 Markdown table only. Nothing before or after it.
 
 ## Admin icons
@@ -18,8 +20,8 @@ Node, then Router, then LAG, then Interface.
 ## VCP example
 | Node | Router | LAG | Interface | Description | Speed | Member Ports | Admin | Oper Status | Role |
 |------|--------|-----|-----------|-------------|-------|-------------|-------|-------------|------|
-| VCP70DEND01 | HCINDENDA01 | LAG-12 | lag-12 | CP0 Connectivity | 100G | 1/1 UP | ✅ UP | ✅ UP | CP0 |
-| VCP70DEND01 | HCINDENDA01 | LAG-15 | lag-15 | DP1 Connectivity | 100G | 1/2 UP | ✅ UP | ⚠️ DEGRADED | DP1 |
+| VCP70DEND01 | HCINDENDA01 | LAG-12 | lag-12 | VCP70DEND01-CP0 | UNKNOWN | 1/1 UP | ✅ UP | ✅ UP | CP0 |
+| VCP70DEND01 | HCINDENDA01 | LAG-15 | lag-15 | VCP70DEND01-DP1 | UNKNOWN | 1/1 UP | ✅ UP | ✅ UP | DP1 |
 
 ## CAP example
 | Node | Router | LAG | Interface | Description | Speed | Member Ports | Admin | Oper Status |
